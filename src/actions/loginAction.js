@@ -13,6 +13,10 @@ let user = {
 
 
 //登录请求
+/**
+ *  登录
+ * @returns {function(*)}
+ */
 export function login() {
     return dispatch => {
         dispatch(isLogining());

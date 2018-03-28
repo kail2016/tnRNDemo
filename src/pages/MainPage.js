@@ -3,8 +3,10 @@
  */
 import React, {Component} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-// import {connect} from 'react-redux'; // 引入connect函数
+import {connect} from 'react-redux'; // 引入connect函数
 import {NavigationActions} from "react-navigation";
+import Counter from "../component/Counter";
+import *as counterAction from '../actions/counterAction';
 
 const resetAction = NavigationActions.reset({
     index: 0,
@@ -24,8 +26,11 @@ class MainPage extends Component {
 
     render() {
         const {user} = this.props.navigation;
+        const {count, incrementFn, decrementFn} = this.props;
         return (
             <View style={styles.container}>
+                <Counter counter={count} decrementFn={decrementFn} incrementFn={incrementFn}/>
+
                 <TouchableOpacity onPress={this.logout.bind(this)} style={{marginTop: 50}}>
                     <View>
                         <Text>退出登录
@@ -46,16 +51,24 @@ const styles = StyleSheet.create({
     }
 });
 
+// 哪些 Redux 全局的 state 是我们组件想要通过 props 获取的？
+function mapStateToProps(state) {
+    return {
+        count: state.counter.count,
+    };
+}
+// 哪些 action 创建函数是我们想要通过 props 获取的？
+function mapDispatchToProps(dispatch) {
+    return {
+        incrementFn: () => dispatch(counterAction.increment()),
+        decrementFn: () => dispatch(counterAction.decrement()),
+    };
+}
 
-export  default MainPage;
 
-// export default connect(
-//     (state) => ({
-//         count: state.counter.count,
-//     }),
-//     (dispatch) => ({
-//         incr
-// ementFn: () => dispatch(counterAction.increment()),
-//         decrementFn: () => dispatch(counterAction.decrement()),
-//     })
-// )(MainPage)
+// export  default MainPage;
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MainPage)

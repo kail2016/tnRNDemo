@@ -3,12 +3,15 @@
  */
 'use strict';
 import {applyMiddleware, createStore} from "redux";
-import thunkMiddleware from "redux-thunk";
+import thunk from "redux-thunk";
 import rootReducer from "../reducers/index";
+import {createLogger} from 'redux-logger'; // 利用redux-logger打印日志
+// import {apiMiddleware} from 'redux-api-middleware';
 
-const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
+const logger = createLogger({collapsed: true});
+const createStoreWithMiddleware = applyMiddleware(thunk,logger)(createStore);
 
 export default function configureStore(initalState) {
-    const store = createStoreWithMiddleware(rootReducer,initalState);
+    const store = createStoreWithMiddleware(rootReducer, initalState);
     return store
 }

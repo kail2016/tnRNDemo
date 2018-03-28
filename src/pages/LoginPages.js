@@ -16,13 +16,16 @@ const resetAction = NavigationActions.reset({
 });
 
 class LoginPage extends Component {
+
+
     static navigationOptions = {
-        title: 'LoginPage',
+        title: 'LoginPage',    //设置标题
     };
 
     shouldComponentUpdate(nextProps, nextState) {
+        console.log("shouldComponentUpdate");
         // 登录完成,切成功登录
-        if (nextProps.status === '登陆成功' && nextProps.isSuccess) {
+        if (nextProps.isSuccess) {
             this.props.navigation.dispatch(resetAction);
             return false;
         }
@@ -30,12 +33,16 @@ class LoginPage extends Component {
     }
 
     render() {
-        const {login} = this.props;
-
+        const {user, login} = this.props;
+        let age = 0, name = "--";
+        if (user != null) {
+            age = user.age;
+            name = user.name;
+        }
         return (
             <View style={styles.container}>
-                <Text>状态: {this.props.status}
-                </Text>
+                <Text>状态: {this.props.status}</Text>
+                <Text> 欢迎来自南京的{age}岁的{name}</Text>
                 <TouchableOpacity onPress={() => login()} style={{marginTop: 50}}>
                     <View style={styles.loginBtn}>
                         <Text>登录
